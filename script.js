@@ -48,25 +48,31 @@ $(document).ready(function(){
     $('#products-row').append(colDiv);
   });
   
-  // <div class="col-md-4">
-  //         <div class="card">
-  //           <img class="card-img-top" src="https://s3.amazonaws.com/mernbook/marketplace/tardis.png" alt="Card image cap">
-  //           <div class="card-body">
-  //             <h5 class="card-title">Tardis Figurine</h5>
-  //             <p class="card-text">$ 14</p>
-  //             <button class="btn btn-primary">Add to Cart</button>
-  //           </div>
-  //         </div>
-  //       </div>
-  
-  
   $("#itemNo").text(cart.items.length);
+  
+  cart.items.forEach(function(item, index){
+    var colDiv = $('<div>').addClass('col-md-4');
+    var cardDiv = $('<div>').addClass('card');
+    
+    var productImage = $('<img>').addClass("card-img-top");
+    productImage.attr('src', item.image);
+    cardDiv.append(productImage);
+    
+    var cardBody = $('<div>').addClass('card-body');
+    cardDiv.append(cardBody);
+    
+    var productTitle = $('<h5>').addClass('card-title').text(item.name);
+    cardBody.append(productTitle);
+    
+    colDiv.append(cardDiv);
+    $('#cart-row').append(colDiv);
+  });
   
   $("#showCartBtn").click(function(){
     $("#cart").show();
     $("#products").hide();
     $("#showCartBtn").hide();
-  });
+  })
   
   $("#close").click(function(){
     $("#cart").hide();
