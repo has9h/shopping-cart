@@ -84,16 +84,13 @@ $(document).ready(function(){
     addToCart.click(function(event){
       // console.log(item.price * item.quantity);
       
-      var cartItem = products[event.target.id];
-      cart.items.push(cartItem);
+      var i;
+      for(i = 0; i < item.quantity; i++){
+        var cartItem = products[event.target.id];
+        cart.items.push(cartItem);
+      }
       
-      var totalQuantity = parseInt(cart.items.length);
-      console.log("Cart.items.length: " + totalQuantity);
-      console.log("item.quantity: " + item.quantity);
-      
-      totalQuantity = totalQuantity + item.quantity;
       cart.total = cart.total + (item.price * item.quantity);
-      
       $("#itemNo").text(cart.items.length);
       $("#total").text(cart.total);
       
