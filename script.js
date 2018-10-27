@@ -6,6 +6,7 @@ var products = [
   {name: "Old Ford Car Model", price: "46", image: "https://s3.amazonaws.com/mernbook/marketplace/Ford.jpg"},
   {name: "Storm Trooper Figurine", price: "23", image: "https://s3.amazonaws.com/mernbook/marketplace/stormtrooper-1995015_960_720.jpg"}
 ];
+
 var cart = localStorage.getItem('cart') 
             ? JSON.parse(localStorage.getItem('cart')) 
             : {
@@ -20,6 +21,7 @@ $(document).ready(function(){
     // console.log(index);
     var colDiv = $('<div>').addClass('col-md-4');
     var cardDiv = $('<div>').addClass('card');
+    
     var productImage = $('<img>').addClass("card-img-top");
     productImage.attr('src', product.image);
     cardDiv.append(productImage);
@@ -35,11 +37,14 @@ $(document).ready(function(){
     
     var addToCart = $('<button>').addClass('btn btn-primary').text('Add to Cart').attr('id', index);
     addToCart.click(function(event){
-      console.log(event.target.id);
+      // console.log(event.target.id);
       var cartItem = products[event.target.id];
       cartItem.quantity = 1;
       cart.items.push(cartItem);
+      
+      cart.total = cart.items.length * cartItem.price;
       $("#itemNo").text(cart.items.length);
+      $("#total").text(cart.total);
       localStorage.setItem('cart', JSON.stringify(cart));
     });
     cardBody.append(addToCart);
@@ -49,6 +54,7 @@ $(document).ready(function(){
   });
   
   $("#itemNo").text(cart.items.length);
+  $("#total").text(cart.total);
   
   cart.items.forEach(function(item, index){
     var colDiv = $('<div>').addClass('col-md-4');
@@ -63,6 +69,37 @@ $(document).ready(function(){
     
     var productTitle = $('<h5>').addClass('card-title').text(item.name);
     cardBody.append(productTitle);
+    
+    var productPrice= $('<p>').addClass('card-text').text ("$"+ item.price + " x ");
+    cardBody.append(productPrice);
+    
+    var productQuantity= $('<input id=amount type=number value=1 min=0>').bind('keyup mouseup', function(){
+      // var amount = $('#amount').val();
+      item.quantity = $('#amount').val();
+    });
+    productPrice.append(productQuantity);
+
+    
+    var addToCart = $('<button>').addClass ("btn btn-primary").text("Add to Cart").attr('id', index);
+    addToCart.click(function(event){
+      // console.log(item.price * item.quantity);
+      
+      var cartItem = products[event.target.id];
+      cart.items.push(cartItem);
+      
+      var totalQuantity = parseInt(cart.items.length);
+      console.log("Cart.items.length: " + totalQuantity);
+      console.log("item.quantity: " + item.quantity);
+      
+      totalQuantity = totalQuantity + item.quantity;
+      cart.total = cart.total + (item.price * item.quantity);
+      
+      $("#itemNo").text(cart.items.length);
+      $("#total").text(cart.total);
+      
+      localStorage.setItem('cart', JSON.stringify(cart));
+    });
+    cardBody.append(addToCart);
     
     colDiv.append(cardDiv);
     $('#cart-row').append(colDiv);
