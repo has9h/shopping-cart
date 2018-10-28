@@ -42,7 +42,14 @@ $(document).ready(function(){
       cartItem.quantity = 1;
       cart.items.push(cartItem);
       
-      cart.total = cart.items.length * cartItem.price;
+      console.log("Cart Total: " + cart.total);
+      console.log("Cart.items.quantity: " + cart.items.length);
+      
+      cart.total = cart.total + parseInt(cartItem.price);
+      
+      console.log("Cart Total: " + cart.total);
+      console.log("Cart.items.quantity: " + cart.items.length);
+      
       $("#itemNo").text(cart.items.length);
       $("#total").text(cart.total);
       localStorage.setItem('cart', JSON.stringify(cart));
